@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Uquv Platforma</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Reset & Bosh sozlamalar */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: #f5f7fa; 
+      color: #333;
+      line-height: 1.6;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* Header */
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+      position: sticky; 
+      top: 0; 
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+    
+    header.scrolled {
+      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    }
+    
+    .nav-container {
+      max-width: 1200px; 
+      margin: auto;
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between;
+      padding: 15px 20px;
+    }
+    
+    .logo { 
+      font-size: 26px; 
+      font-weight: bold; 
+      color: #4a4e69;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .logo i {
+      color: #6c63ff;
+    }
+    
+    nav ul { 
+      display: flex; 
+      gap: 25px; 
+    }
+    
+    nav a {
+      position: relative;
+      padding: 5px 0;
+      font-weight: 500;
+    }
+    
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #6c63ff;
+      transition: width 0.3s ease;
+    }
+    
+    nav a:hover::after {
+      width: 100%;
+    }
+    
+    .auth-buttons button {
+      margin-left: 12px; 
+      padding: 10px 20px;
+      border: none; 
+      border-radius: 30px;
+      cursor: pointer; 
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .login-btn { 
+      background: transparent; 
+      color: #4a4e69;
+      border: 1px solid #4a4e69;
+    }
+    
+    .login-btn:hover {
+      background: rgba(74, 78, 105, 0.05);
+    }
+    
+    .signup-btn { 
+      background: linear-gradient(135deg, #6c63ff, #4a4e69); 
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+    }
+    
+    .signup-btn:hover { 
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(108, 99, 255, 0.4);
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      background: linear-gradient(135deg, rgba(108, 99, 255, 0.8), rgba(74, 78, 105, 0.9)), 
+                  url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80') no-repeat center center/cover;
+      color: #fff;
+      padding: 150px 20px;
+      text-align: center;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.3);
+      z-index: 1;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      margin: 0 auto;
+      animation: fadeInUp 1s ease;
+    }
+    
+    .hero h1 { 
+      font-size: 3rem; 
+      margin-bottom: 20px;
+      line-height: 1.2;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .hero p { 
+      font-size: 1.3rem; 
+      margin-bottom: 40px;
+      opacity: 0.9;
+    }
+    
+    .hero button {
+      padding: 15px 30px; 
+      font-size: 1.1rem;
+      border: none; 
+      background: #fff; 
+      color: #6c63ff;
+      border-radius: 30px; 
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .hero button:hover { 
+      background: #f8f9fa; 
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .floating-elements {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      z-index: 1;
+    }
+    
+    .floating-element {
+      position: absolute;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      animation: float 15s infinite linear;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* Kurslar */
+    .courses {
+      max-width: 1200px; 
+      margin: 80px auto; 
+      padding: 0 20px;
+    }
+    
+    .courses h2 { 
+      margin-bottom: 40px; 
+      font-size: 2.5rem; 
+      text-align: center;
+      position: relative;
+      display: inline-block;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    .courses h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #6c63ff, #4a4e69);
+      border-radius: 2px;
+    }
+    
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    
+    .course-card {
+      background: #fff; 
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .course-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(108, 99, 255, 0.1), rgba(74, 78, 105, 0.1));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .course-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+    
+    .course-card:hover::before {
+      opacity: 1;
+    }
+    
+    .course-card img {
+      width: 100%; 
+      height: 180px; 
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .course-card:hover img {
+      transform: scale(1.05);
+    }
+    
+    .course-card .course-content {
+      padding: 20px;
+      position: relative;
+    }
+    
+    .course-content h3 { 
+      font-size: 1.3rem; 
+      margin-bottom: 12px;
+      color: #4a4e69;
+    }
+    
+    .course-content p {
+      font-size: 1rem; 
+      color: #666;
+      margin-bottom: 20px;
+    }
+    
+    .course-content .course-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      font-size: 0.9rem;
+      color: #777;
+    }
+    
+    .course-content .rating {
+      color: #ffc107;
+    }
+    
+    .course-content button {
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #6c63ff, #4a4e69); 
+      color: #fff;
+      border: none; 
+      border-radius: 30px; 
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .course-content button:hover { 
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+    }
+
+    /* Footer */
+    footer {
+      background: linear-gradient(135deg, #4a4e69, #3a3d5a);
+      color: #f2e9e4;
+      padding: 60px 20px 30px;
+      position: relative;
+    }
+    
+    .footer-container {
+      max-width: 1200px; 
+      margin: auto; 
+      display: flex;
+      flex-wrap: wrap; 
+      justify-content: space-between;
+      gap: 40px;
+    }
+    
+    .footer-section {
+      min-width: 200px;
+      flex: 1;
+    }
+    
+    .footer-section h4 { 
+      margin-bottom: 20px; 
+      font-size: 1.2rem;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    
+    .footer-section h4::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background: #6c63ff;
+    }
+    
+    .footer-section ul li { 
+      margin-bottom: 12px;
+      transition: transform 0.3s ease;
+    }
+    
+    .footer-section ul li:hover {
+      transform: translateX(5px);
+    }
+    
+    .footer-section ul li a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .footer-section ul li a i {
+      font-size: 0.8rem;
+      color: #6c63ff;
+    }
+    
+    .social-icons { 
+      display: flex; 
+      gap: 15px; 
+      margin-top: 20px;
+    }
+    
+    .social-icons a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px; 
+      height: 40px;
+      background: rgba(255,255,255,0.1); 
+      border-radius: 50%;
+      color: #fff;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .social-icons a:hover { 
+      background: #6c63ff;
+      transform: translateY(-3px);
+    }
+    
+    .copyright {
+      text-align: center; 
+      margin-top: 50px;
+      padding-top: 20px;
+      width: 100%;
+      font-size: 14px; 
+      opacity: 0.8;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .back-to-top {
+      position: absolute;
+      top: -20px;
+      right: 30px;
+      width: 40px;
+      height: 40px;
+      background: #6c63ff;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    
+    .back-to-top:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    /* Animatsiyalar */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+    
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .hero h1 { font-size: 2.5rem; }
+      .hero p { font-size: 1.1rem; }
+      
+      .footer-container {
+        gap: 30px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .nav-container {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      nav ul {
+        gap: 15px;
+      }
+      
+      .hero {
+        padding: 100px 20px;
+      }
+      
+      .hero h1 { 
+        font-size: 2rem; 
+        margin-bottom: 15px;
+      }
+      
+      .hero p { 
+        font-size: 1rem; 
+        margin-bottom: 30px;
+      }
+      
+      .course-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-section {
+        min-width: 150px;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .auth-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+      }
+      
+      .auth-buttons button {
+        margin-left: 0;
+        padding: 8px 15px;
+      }
+      
+      .footer-section {
+        min-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header id="header">
+  <div class="nav-container">
+    <div class="logo">
+      <i class="fas fa-graduation-cap"></i>
+      <span>UquvPlatforma.uz</span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#">Uy</a></li>
+        <li><a href="#">Kurslar</a></li>
+        <li><a href="#">Biz haqimizda</a></li>
+        <li><a href="#">Aloqa</a></li>
+      </ul>
+    </nav>
+    <div class="auth-buttons">
+      <button class="login-btn">Kirish</button>
+      <button class="signup-btn">Ro‘yxatdan o‘tish</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="floating-elements">
+    <div class="floating-element" style="width: 30px; height: 30px; top: 20%; left: 10%;"></div>
+    <div class="floating-element" style="width: 50px; height: 50px; top: 60%; left: 80%;"></div>
+    <div class="floating-element" style="width: 40px; height: 40px; top: 30%; left: 50%;"></div>
+    <div class="floating-element" style="width: 25px; height: 25px; top: 70%; left: 30%;"></div>
+  </div>
+  <div class="hero-content">
+    <h1>Bilim sari atlangan har bir qadamingiz uchun</h1>
+    <p>Eng yaxshi onlayn kurslar bilan o‘rganing, rivojlaning va karyerangizni kuchaytiring.</p>
+    <button>Kurslarga tashrif <i class="fas fa-arrow-right"></i></button>
+  </div>
+</section>
+
+<section class="courses">
+  <h2>Tanlangan kurslar</h2>
+  <div class="course-grid">
+    <div class="course-card animate-on-scroll">
+      <img src="https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="JavaScript">
+      <div class="course-content">
+        <h3>JavaScript asoslari</h3>
+        <p>Interaktiv va dinamik web-sahifalarni yarating.</p>
+        <div class="course-meta">
+          <span><i class="far fa-clock"></i> 6 hafta</span>
+          <span class="rating"><i class="fas fa-star"></i> 4.8</span>
+        </div>
+        <button><i class="fas fa-info-circle"></i> Batafsil</button>
+      </div>
+    </div>
+    <div class="course-card animate-on-scroll">
+      <img src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80" alt="Python">
+      <div class="course-content">
+        <h3>Python dasturlash</h3>
+        <p>Ma'lumot tahlili va web-backend uchun ideal tanlov.</p>
+        <div class="course-meta">
+          <span><i class="far fa-clock"></i> 8 hafta</span>
+          <span class="rating"><i class="fas fa-star"></i> 4.9</span>
+        </div>
+        <button><i class="fas fa-info-circle"></i> Batafsil</button>
+      </div>
+    </div>
+    <div class="course-card animate-on-scroll">
+      <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="UI Design">
+      <div class="course-content">
+        <h3>UI/UX dizayn</h3>
+        <p>Foydalanuvchilarga qulay interfeyslar yarating.</p>
+        <div class="course-meta">
+          <span><i class="far fa-clock"></i> 10 hafta</span>
+          <span class="rating"><i class="fas fa-star"></i> 4.7</span>
+        </div>
+        <button><i class="fas fa-info-circle"></i> Batafsil</button>
+      </div>
+    </div>
+    <div class="course-card animate-on-scroll">
+      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Data Science">
+      <div class="course-content">
+        <h3>Data Science asoslari</h3>
+        <p>Ma'lumotlarni tahlil qilish va vizualizatsiya texnikasi.</p>
+        <div class="course-meta">
+          <span><i class="far fa-clock"></i> 12 hafta</span>
+          <span class="rating"><i class="fas fa-star"></i> 4.9</span>
+        </div>
+        <button><i class="fas fa-info-circle"></i> Batafsil</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+  <div class="footer-container">
+    <div class="footer-section">
+      <h4>Platformamiz</h4>
+      <ul>
+        <li><a href="#"><i class="fas fa-chevron-right"></i> Biz haqimizda</a></li>
+        <li><a href="#"><i class="fas fa-chevron-right"></i> Kurslar</a></li>
+        <li><a href="#"><i class="fas fa-chevron-right"></i> Blog</a></li>
+        <li><a href="#"><i class="fas fa-chevron-right"></i> Mentorlar</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h4>Yordam</h4>
+      <ul>
+        <li><a href="#"><i class="fas fa-chevron-right"></i> Til tanlash</a></li>
+        <li><a href="#"><i class="fas fa-chevron-right"></i> FAQ</a></li>
+        <li><a href="#"><i class="fas fa-chevron-right"></i> Aloqa</a></li>
+        <li><a href="#"><i class="fas fa-chevron-right"></i> Qo'llab-quvvatlash</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h4>Hamkorlik</h4>
+      <ul>
+        <li><a href="#"><i class="fas fa-chevron-right"></i> Hamkor bo'lish</a></li>
+        <li><a href="#"><i class="fas fa-chevron-right"></i> Mentor bo'lish</a></li>
+        <li><a href="#"><i class="fas fa-chevron-right"></i> Ish joylar</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h4>Biz bilan bog'laning</h4>
+      <p><i class="fas fa-envelope"></i> info@uquvplatforma.uz</p>
+      <p><i class="fas fa-phone"></i> +998 91 315 03 05</p>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="https//t.me/ITPARC"><i class="fab fa-telegram"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="copyright">
+    © 2025 UquvPlatforma.uz. Barcha huquqlar himoyalangan.
+  </div>
+</footer>
+
+<script>
+  // Header scroll effekti
+  window.addEventListener('scroll', function() {
+    const header = document.getElementById('header');
+    if (window.scrollY > 50) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  });
+  
+  // Scroll animatsiyalari
+  function animateOnScroll() {
+    const elements = document.querySelectorAll('.animate-on-scroll');
+    elements.forEach(element => {
+      const elementPosition = element.getBoundingClientRect().top;
+      const screenPosition = window.innerHeight / 1.2;
+      
+      if (elementPosition < screenPosition) {
+        element.classList.add('visible');
+      }
+    });
+  }
+  
+  window.addEventListener('scroll', animateOnScroll);
+  window.addEventListener('load', animateOnScroll);
+  
+  // Back to top tugmasi
+  const backToTop = document.getElementById('backToTop');
+  
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 300) {
+      backToTop.style.opacity = '1';
+      backToTop.style.visibility = 'visible';
+    } else {
+      backToTop.style.opacity = '0';
+      backToTop.style.visibility = 'hidden';
+    }
+  });
+  
+  backToTop.addEventListener('click', function() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+</script>
+
+</body>
+</html>
